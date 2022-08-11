@@ -1,0 +1,16 @@
+html, body {width: 100%; height: 100%; margin:0px}
+
+#map_ {
+	height: calc(100%);
+	width: calc(100% - 300px);
+}
+
+#poi-list {
+	width: 300px;
+	overflow: scroll;
+}
+
+ul {
+	margin-left: 0px;
+	padding-left: 1rem;
+}
