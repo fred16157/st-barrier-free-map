@@ -33,7 +33,7 @@
             });
             poiList = document.getElementById('poi-list');
 
-            fetch('./map_markers.json', {mode: "cors"}).then((response) => response.json()).then((data) => setMarkers(data));
+            fetch('./map_markers.json', {mode: "cors"}).then((response) => response.json()).then((data) => setMarkers(data.sort((a, b) => a.id - b.id)));
 
         };// end init
 
@@ -53,7 +53,16 @@
             for (const idx in data) {
                 const entry = data[idx];
                 const marker = new L.Marker(new L.LatLng(entry.lat, entry.lng), {icon:new L.Icon({iconUrl:'./marker-icon-2x.png',iconSize:new L.Point(20,30)})}).addTo(map);
-                const popupContent = ejs.render("<h5><%= entry.id %>동 <%= entry.title %></h5><% if (entry.warnings) { %><ul><% for (const warning of entry.warnings) { %> <li><%= warning %> <% } %></li></ul><% } %>", {entry: entry});
+                const popupContent = ejs.render(`
+                    <div class="col-9"><h5><%= entry.id %>동 <%= entry.title %></h5></div>
+                    <% if (entry.warnings) { %>
+                        <ul>
+                        <% for (const warning of entry.warnings) { %>
+                            <li><%= warning %></li>
+                        <% } %>
+                        </ul>
+                    <% } %>
+                `, {entry: entry});
                 const customOptions = {
                     "offset": [0, -10]
                 };
