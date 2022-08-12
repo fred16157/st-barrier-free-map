@@ -19,6 +19,7 @@
         let	map = null;
         let poiList = null;
         let markers = [];
+        let slider = null;
 
         const init = function(){
             map = L.map('map_', {
@@ -47,14 +48,14 @@
             const scaleBar = new L.Control.Scale({position:'bottomright'});
             map.addControl(scaleBar);
 
-            const slider = new L.Control.Zoomslider({position:'topright'});
+            slider = new L.Control.Zoomslider({position:'topright'});
             map.addControl(slider);
 
             for (const idx in data) {
                 const entry = data[idx];
                 const marker = new L.Marker(new L.LatLng(entry.lat, entry.lng), {icon:new L.Icon({iconUrl:'./marker-icon-2x.png',iconSize:new L.Point(20,30)})}).addTo(map);
                 const popupContent = ejs.render(`
-                    <div class="col-9"><h5><%= entry.id %>동 <%= entry.title %></h5></div>
+                    <h5><%= entry.id %> - <%= entry.title %></h5>
                     <% if (entry.warnings) { %>
                         <ul>
                         <% for (const warning of entry.warnings) { %>
@@ -70,7 +71,7 @@
 
                 poiList.innerHTML += ejs.render(`
                     <button type="button" class="list-group-item list-group-item-action " onclick="moveAndOpen(${idx})">
-                        <b><%= entry.id %>동 <%= entry.title %></b>
+                        <b><%= entry.id %> - <%= entry.title %></b>
                         <br/>
                         <% if (entry.warnings) { %>
                             <ul>
@@ -91,16 +92,43 @@
             map.setView([target.lat, target.lng], 14)
             target.marker.openPopup()
         }
+
+        const toggleSidebar = (toggle) => {
+            if (toggle) {
+                const sidebar = document.getElementById("sidebar");
+                const closeBtnWrapper = document.getElementById("close-btn-wrapper");
+                const poiList = document.getElementById("poi-list");
+
+                poiList.classList.remove("collapsed");
+                closeBtnWrapper.classList.remove("collapsed");
+                sidebar.classList.remove("collapsed");
+            } else {
+                const sidebar = document.getElementById("sidebar");
+                const closeBtnWrapper = document.getElementById("close-btn-wrapper");
+                const poiList = document.getElementById("poi-list");
+
+                poiList.classList.add("collapsed");
+                closeBtnWrapper.classList.add("collapsed");
+                sidebar.classList.add("collapsed");
+            }
+        }
     </script>
 <body onload="init()">
 
 <div id="map_"></div>
-<div class="position-absolute top-0 end-0 bottom-0 d-inline-block">
-    <div class="position-fixed top-0 end-0 bottom-0 list-group list-group-flush" id="poi-list">
 
-    </div>
+<div class="position-absolute h-100 top-0 bottom-0 end-0" id="open-btn-wrapper">
+    <button class="position-fixed bottom-0 btn btn-primary rounded-circle" id="open-btn" onclick="toggleSidebar(true)"><img style="color: white;" src="map.svg"></img></button>
 </div>
 
+<div class="position-absolute top-0 end-0 bottom-0" id="sidebar">
+    <div class="position-fixed top-0 end-0 bg-white" style="width: 300px;" id="close-btn-wrapper">
+        <button class="btn btn-close" id="close-btn" onclick="toggleSidebar(false)"></button>
+    </div>
+    <div class="position-fixed top-0 end-0 bottom-0 list-group list-group-flush" id="poi-list">
+        
+    </div>
+</div>
 
 </body>
 </html>
