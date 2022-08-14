@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>공간정보플랫폼</title>
+    <title>서울과학기술대학교 배리어프리 지도</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -55,7 +55,7 @@
                 const entry = data[idx];
                 const marker = new L.Marker(new L.LatLng(entry.lat, entry.lng), {icon:new L.Icon({iconUrl:'./marker-icon-2x.png',iconSize:new L.Point(20,30)})}).addTo(map);
                 const popupContent = ejs.render(`
-                    <h5><%= entry.id %> - <%= entry.title %></h5>
+                    <h5><%= entry.id %> - <%= entry.title %><span class="text-body"><a class="btn btn-link" href="https://maps.google.com/?q=<%= entry.lat %>,<%= entry.lng %>">구글 지도</a></span></h5>
                     <% if (entry.warnings) { %>
                         <ul>
                         <% for (const warning of entry.warnings) { %>
@@ -91,6 +91,7 @@
             const target = markers[idx]
             map.setView([target.lat, target.lng], 14)
             target.marker.openPopup()
+            toggleSidebar(false)
         }
 
         const toggleSidebar = (toggle) => {
