@@ -24,6 +24,16 @@ html, body {width: 100%; height: 100%; margin:0px}
 	width: 0px !important;
 }
 
+.leaflet-popup-close-button {
+	width: 24px !important;
+	height: 24px !important;
+}
+
+.leaflet-marker-icon {
+	margin-top: -36px !important;
+	margin-left: -36px !important;
+}
+
 #open-btn-wrapper {
 	width: 96px;
 	z-index: 9999;

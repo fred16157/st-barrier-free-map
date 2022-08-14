@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="./index.css" />
 
     <!-- 지도API -->
-    <link rel="stylesheet" type="text/css" href="http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapCss">
-    <script type="text/javascript" src="http://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapJs&key=523b6473492149d38c087b5d7e7531f9"></script>
+    <link rel="stylesheet" type="text/css" href="https://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapCss">
+    <script type="text/javascript" src="https://map.seoul.go.kr/smgis/apps/mapsvr.do?cmd=gisMapJs&key=523b6473492149d38c087b5d7e7531f9"></script>
     <script type="text/javascript" src="./js/ejs.min.js"></script>
     <script type="text/javascript" src="./js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
@@ -53,7 +53,7 @@
 
             for (const idx in data) {
                 const entry = data[idx];
-                const marker = new L.Marker(new L.LatLng(entry.lat, entry.lng), {icon:new L.Icon({iconUrl:'./marker-icon-2x.png',iconSize:new L.Point(20,30)})}).addTo(map);
+                const marker = new L.Marker(new L.LatLng(entry.lat, entry.lng), {icon:new L.Icon({iconUrl:'./map-marker.svg',iconSize:new L.Point(36,36)}), offset: [0, -10]}).addTo(map);
                 const popupContent = ejs.render(`
                     <h5><%= entry.id %> - <%= entry.title %><span class="text-body"><a class="btn btn-link" href="https://maps.google.com/?q=<%= entry.lat %>,<%= entry.lng %>">구글 지도</a></span></h5>
                     <% if (entry.warnings) { %>
@@ -65,7 +65,8 @@
                     <% } %>
                 `, {entry: entry});
                 const customOptions = {
-                    "offset": [0, -10]
+                    "offset": [-18, -18],
+                    "closeOnClick": true,
                 };
                 marker.bindPopup(popupContent, customOptions);
 
@@ -118,8 +119,8 @@
 
 <div id="map_"></div>
 
-<div class="position-absolute h-100 top-0 bottom-0 end-0" id="open-btn-wrapper">
-    <button class="position-fixed bottom-0 btn btn-primary rounded-circle" id="open-btn" onclick="toggleSidebar(true)"><img style="color: white;" src="map.svg"></img></button>
+<div class="position-absolute h-25 top-0 bottom-0 end-0" id="open-btn-wrapper">
+    <button class="position-fixed bottom-0 btn btn-primary rounded-circle" id="open-btn" onclick="toggleSidebar(true)"><img style="color: white;" src="map.svg"></button>
 </div>
 
 <div class="position-absolute top-0 end-0 bottom-0" id="sidebar">
